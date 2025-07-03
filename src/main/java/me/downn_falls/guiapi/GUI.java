@@ -1,13 +1,13 @@
 package me.downn_falls.guiapi;
 
 import me.downn_falls.guiapi.api.Editable;
-import me.downn_falls.guiapi.api.GUIAPI;
 import me.downn_falls.guiapi.component.GuiComponent;
 import me.downn_falls.guiapi.utils.GuiUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -16,6 +16,7 @@ public class GUI {
 
     public static HashMap<UUID, GUI> guis = new HashMap<>();
     private final List<BukkitTask> updater = new ArrayList<>();
+    private final Plugin plugin;
     private String title;
     private final int size;
     private final LinkedHashMap<String, GuiComponent> components = new LinkedHashMap<>();
@@ -25,7 +26,8 @@ public class GUI {
     private UUID groupUUID = inventoryUUID;
     private final List<Editable> editableList = new ArrayList<>();
 
-    public GUI(String title, int rows) {
+    public GUI(Plugin plugin, String title, int rows) {
+        this.plugin = plugin;
         this.title = GuiUtils.colorize(title);
         this.size = 9 * rows;
     }
@@ -62,11 +64,13 @@ public class GUI {
         }
     }
 
+    public Plugin getPlugin() { return plugin; }
+
     public UUID getGroupUUID() { return groupUUID; }
     public void setGroupUUID(UUID uuid) { this.groupUUID = uuid; }
 
     public void addUpdater(GuiComponent component, long interval) {
-        BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(GUIAPI.getPlugin(), () -> {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
 
             try {
                 if (inventory.getViewers().isEmpty()) {

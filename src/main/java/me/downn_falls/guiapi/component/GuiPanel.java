@@ -9,6 +9,7 @@ import me.downn_falls.guiapi.api.Editable;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class GuiPanel extends GuiComponent implements Clickable {
 
@@ -16,7 +17,7 @@ public class GuiPanel extends GuiComponent implements Clickable {
     private final Map<String, String> componentIds = new HashMap<>();
     protected Runnable updateListeners = () -> {};
 
-    private final List<TriConsumer<String, NBTItem, InventoryClickEvent, Boolean>> listeners = new ArrayList<>();
+    private final List<BiFunction<String, InventoryClickEvent, Boolean>> listeners = new ArrayList<>();
 
     public GuiPanel(GUI gui, String id, int slot, int row, int column) {
         super(gui, id, slot, row, column);
@@ -45,7 +46,7 @@ public class GuiPanel extends GuiComponent implements Clickable {
 
     public Map<String, GuiComponent> getComponents() { return this.components; }
 
-    public void addListener(TriConsumer<String, NBTItem, InventoryClickEvent, Boolean> listener) {
+    public void addListener(BiFunction<String, InventoryClickEvent, Boolean> listener) {
         listeners.add(listener);
     }
 
@@ -59,17 +60,17 @@ public class GuiPanel extends GuiComponent implements Clickable {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
 
-        for (TriConsumer<String, NBTItem, InventoryClickEvent, Boolean> listener : listeners) {
-            listener.accept(componentId, nbt, event);
+        for (BiFunction<String, InventoryClickEvent, Boolean> listener : listeners) {
+            listener.apply(componentId, event);
         }
 
         if (getComponents().containsKey(componentId)) {
             GuiComponent component = getComponents().get(componentId);
             if (!(component instanceof Editable)) event.setCancelled(true);
             if (component instanceof Clickable clickable) {
-                clickable.onClick(componentId, nbt, event);
+                clickable.onClick(componentId, event);
             }
         }
     }

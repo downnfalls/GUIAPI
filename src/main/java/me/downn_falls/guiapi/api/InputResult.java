@@ -1,6 +1,6 @@
 package me.downn_falls.guiapi.api;
 
-import me.downn_falls.blacksmith.Utils;
+import me.downn_falls.guiapi.utils.GuiUtils;
 
 public class InputResult {
     public static InputResult SUCCESS = new InputResult(null, false);
@@ -12,7 +12,7 @@ public class InputResult {
     private final boolean error;
 
     private InputResult(String message, boolean error) {
-        this.message = Utils.colorize(message);
+        this.message = GuiUtils.colorize(message);
         this.error = error;
     }
 

@@ -86,7 +86,7 @@ public class GuiEditableSlot extends GuiComponent implements Editable, Clickable
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
         ItemStack cursor = event.getCursor();
 
         if (cursor != null && cursor.getType().equals(Material.AIR))

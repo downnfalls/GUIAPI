@@ -6,7 +6,7 @@ import me.downn_falls.guiapi.GuiListener;
 import me.downn_falls.guiapi.GuiRenderer;
 import me.downn_falls.guiapi.ItemStackBuilder;
 import me.downn_falls.guiapi.api.Clickable;
-import me.downn_falls.guiapi.api.GUIAPI;
+import me.downn_falls.guiapi.GUIAPI;
 import me.downn_falls.guiapi.api.InputResult;
 import me.downn_falls.guiapi.utils.GuiUtils;
 import org.bukkit.Bukkit;
@@ -86,9 +86,9 @@ public class GuiTextInput extends GuiButton implements Clickable {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
 
-        super.onClick(componentId, nbt, event);
+        super.onClick(componentId, event);
 
         if (!isListenerCancel() && event.getWhoClicked() instanceof Player player) {
             if (enable) {
@@ -108,7 +108,7 @@ public class GuiTextInput extends GuiButton implements Clickable {
 
         InputResult result = whenInput.apply(event);
 
-        Bukkit.getScheduler().runTask(GUIAPI.getPlugin(), ()-> {
+        Bukkit.getScheduler().runTask(getGUI().getPlugin(), ()-> {
             if (result.isError()) {
                 event.getPlayer().sendMessage(result.getMessage() != null ? result.getMessage() : invalidInputMessage);
             } else {

@@ -42,11 +42,11 @@ public class GuiCheckButton extends GuiButton {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
         if (enable) {
             setCheck(!check);
             getGUI().repaint();
         }
-        super.onClick(componentId, nbt, event);
+        super.onClick(componentId, event);
     }
 }

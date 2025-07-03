@@ -72,9 +72,9 @@ public class GuiItemChooser extends GuiButton implements Clickable {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
 
-        super.onClick(componentId, nbt, event);
+        super.onClick(componentId, event);
 
         if (!isListenerCancel() && event.getWhoClicked() instanceof Player player) {
             if (enable) {

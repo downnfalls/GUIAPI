@@ -66,9 +66,9 @@ public class GuiOptionButton extends GuiButton implements Clickable {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
 
-        super.onClick(componentId, nbt, event);
+        super.onClick(componentId, event);
 
         if (!isListenerCancel() && enable) {
             if (selectedOption >= options.size()) {

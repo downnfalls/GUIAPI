@@ -1,9 +1,8 @@
-package me.downn_falls.testGuiAPI;
+package me.downn_falls.guiapi;
 
-import me.downn_falls.guiapi.GUI;
-import me.downn_falls.guiapi.ItemStackBuilder;
 import me.downn_falls.guiapi.component.GuiButton;
 import me.downn_falls.guiapi.component.GuiEditableSlot;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +15,9 @@ public class TestCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
         if (commandSender instanceof Player player) {
-            GUI gui = new GUI("Test GUI", 6);
+            //GUI.guis.forEach((uuid, gui) -> Bukkit.broadcastMessage(uuid.toString()+": "+gui.getPlugin().getName()));
+
+            GUI gui = new GUI(GUIAPI.getPlugin(), "Test GUI", 6);
 
             GuiEditableSlot editableSlot = new GuiEditableSlot(gui, "test", 10);
             editableSlot.setDisplayItem(new ItemStackBuilder(Material.GRASS_BLOCK, 1).build());
@@ -34,7 +35,7 @@ public class TestCommand implements CommandExecutor {
                 return false;
             });
 
-            //gui.addComponent(editableSlot);
+            gui.addComponent(editableSlot);
             gui.addComponent(button);
 
             gui.open(player);

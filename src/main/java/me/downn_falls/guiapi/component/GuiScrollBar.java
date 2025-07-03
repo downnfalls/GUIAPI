@@ -81,8 +81,10 @@ public class GuiScrollBar extends GuiListPanel {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
-        super.onClick(componentId, nbt, event);
+    public void onClick(String componentId, InventoryClickEvent event) {
+        super.onClick(componentId, event);
+
+        NBTItem nbt = new NBTItem(event.getCurrentItem());
 
         if (nbt.getBoolean("not-available")) return;
 

@@ -5,5 +5,5 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public interface Clickable {
 
-    void onClick(String componentId, NBTItem nbt, InventoryClickEvent event);
+    void onClick(String componentId, InventoryClickEvent event);
 }

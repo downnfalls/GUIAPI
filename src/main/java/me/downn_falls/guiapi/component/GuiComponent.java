@@ -2,7 +2,6 @@ package me.downn_falls.guiapi.component;
 
 import me.downn_falls.guiapi.GUI;
 import me.downn_falls.guiapi.GuiRenderer;
-import me.downn_falls.guiapi.api.Editable;
 
 import java.util.ArrayList;
 import java.util.Collections;

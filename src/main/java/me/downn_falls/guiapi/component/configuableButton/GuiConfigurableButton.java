@@ -21,7 +21,7 @@ public class GuiConfigurableButton extends GuiButton {
 
     public GuiConfigurableButton(GUI gui, String id, int slot) {
         super(gui, id, slot);
-        configGUI = new DefaultConfigGUI(this);
+        configGUI = new DefaultConfigGUI(getGUI().getPlugin(), this);
     }
 
     public GuiConfigurableButton addConfig(String keyId, KeyValueTemplate keyValueTemplate) {
@@ -30,7 +30,7 @@ public class GuiConfigurableButton extends GuiButton {
     }
 
     public void updateConfig() {
-        this.configGUI = new DefaultConfigGUI(this);
+        this.configGUI = new DefaultConfigGUI(getGUI().getPlugin(), this);
     }
 
     public void setConfigGUI(GUI configGUI) {
@@ -69,10 +69,10 @@ public class GuiConfigurableButton extends GuiButton {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
         if (event.isRightClick()) {
             configGUI.open((Player) event.getWhoClicked());
         } else
-            super.onClick(componentId, nbt, event);
+            super.onClick(componentId, event);
     }
 }

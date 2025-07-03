@@ -4,7 +4,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import me.downn_falls.guiapi.api.Clickable;
 import me.downn_falls.guiapi.api.Editable;
 import me.downn_falls.guiapi.component.*;
-import me.downn_falls.guiapi.component.GuiEditableSlot;
 import me.downn_falls.guiapi.utils.GuiUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -16,7 +15,10 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class GuiListener implements Listener {
 
@@ -51,7 +53,7 @@ public class GuiListener implements Listener {
                                 //Bukkit.broadcastMessage("1");
                                 if (component instanceof Clickable clickable) {
                                     String newComponentId = componentIDs.length > 1 ? rawComponentId.substring(componentIDs[0].length() + 1) : rawComponentId;
-                                    clickable.onClick(rawComponentId, nbt, event);
+                                    clickable.onClick(rawComponentId, event);
                                 }
                             } else {
                                 if (!gui.isEditable()) event.setCancelled(true);

@@ -12,11 +12,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class GuiButton extends GuiComponent implements Clickable {
 
     protected ItemStack displayItem = new ItemStackBuilder().build();
-    private final List<TriConsumer<String, NBTItem, InventoryClickEvent, Boolean>> listeners = new ArrayList<>();
+    private final List<BiFunction<String, InventoryClickEvent, Boolean>> listeners = new ArrayList<>();
     private Runnable updateListeners = () -> {};
     protected ItemStack notEnableButton = new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE, 1).setDisplayName("").addItemTag("not-enable", true).build();
     protected boolean enable = true;
@@ -41,7 +42,7 @@ public class GuiButton extends GuiComponent implements Clickable {
     public ItemStack getDisplayItem() {
         return this.displayItem;
     }
-    public GuiButton addListener(TriConsumer<String, NBTItem, InventoryClickEvent, Boolean> listener) {
+    public GuiButton addListener(BiFunction<String, InventoryClickEvent, Boolean> listener) {
         listeners.add(listener);
         return this;
     }
@@ -68,10 +69,10 @@ public class GuiButton extends GuiComponent implements Clickable {
     }
 
     @Override
-    public void onClick(String componentId, NBTItem nbt, InventoryClickEvent event) {
+    public void onClick(String componentId, InventoryClickEvent event) {
         if (enable) {
-            for (TriConsumer<String, NBTItem, InventoryClickEvent, Boolean> listener : listeners) {
-                isListenerCancel = listener.accept(componentId, nbt, event);
+            for (BiFunction<String, InventoryClickEvent, Boolean> listener : listeners) {
+                isListenerCancel = listener.apply(componentId, event);
             }
         }
     }
