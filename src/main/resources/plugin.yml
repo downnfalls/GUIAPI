@@ -4,6 +4,3 @@ main: me.downn_falls.guiapi.GUIAPI
 depend:
   - NBTAPI
 api-version: '1.20'
-commands:
-  opengui:
-    permission: admin

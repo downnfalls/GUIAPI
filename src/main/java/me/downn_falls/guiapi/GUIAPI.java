@@ -11,8 +11,6 @@ public final class GUIAPI extends JavaPlugin {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
         pl = this;
-
-        getCommand("opengui").setExecutor(new TestCommand());
     }
 
     public static void register(Plugin plugin) {

@@ -1,6 +1,5 @@
 package me.downn_falls.guiapi.component.configuableButton;
 
-import de.tr7zw.nbtapi.NBTItem;
 import me.downn_falls.guiapi.GUI;
 import me.downn_falls.guiapi.GuiRenderer;
 import me.downn_falls.guiapi.ItemStackBuilder;

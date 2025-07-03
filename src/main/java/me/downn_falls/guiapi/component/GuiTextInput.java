@@ -6,7 +6,6 @@ import me.downn_falls.guiapi.GuiListener;
 import me.downn_falls.guiapi.GuiRenderer;
 import me.downn_falls.guiapi.ItemStackBuilder;
 import me.downn_falls.guiapi.api.Clickable;
-import me.downn_falls.guiapi.GUIAPI;
 import me.downn_falls.guiapi.api.InputResult;
 import me.downn_falls.guiapi.utils.GuiUtils;
 import org.bukkit.Bukkit;
