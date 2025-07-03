@@ -1,0 +1,4 @@
+name: GUIAPI
+version: '1.0'
+main: me.downn_falls.guiapi.GUIAPI
+api-version: '1.20'
