@@ -15,7 +15,7 @@ public abstract class GuiComponent {
     private final int row;
     private final int column;
     private final GUI gui;
-    private int updateInterval = -1;
+    private long updateInterval = -1;
     private GuiRenderer latestRenderer = null;
 
     public GuiComponent(GUI gui, String id, int slot, int row, int column) {
@@ -45,9 +45,9 @@ public abstract class GuiComponent {
         return getParents().stream().map(GuiComponent::getId).collect(Collectors.joining("."));
     }
 
-    public int getUpdateInterval() { return updateInterval; }
+    public long getUpdateInterval() { return updateInterval; }
 
-    public void setUpdateInterval(int value) { updateInterval = value; }
+    public void setUpdateInterval(long value) { updateInterval = value; }
 
     public int getSlot() {
         return slot;
