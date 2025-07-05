@@ -59,7 +59,7 @@ repositories {
 ```
 ```groovy
 dependencies {
-    implementation 'com.github.downnfalls:GUIAPI:1.0.0'
+    implementation 'com.github.downnfalls:GUIAPI:VERSION'
 }
 ```
 Add the API as dependency to your plugin.yml:
