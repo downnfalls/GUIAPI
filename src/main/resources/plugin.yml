@@ -1,6 +1,6 @@
 name: GUIAPI
 version: '1.0'
-main: me.downn_falls.guiapi.GUIAPI
+main: io.downn_falls.libs.guiapi.GUIAPI
 depend:
   - NBTAPI
 api-version: '1.20'
