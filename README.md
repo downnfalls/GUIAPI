@@ -112,7 +112,7 @@ GuiTextInput input = new GuiTextInput(gui, "name-input", 10)
     .setDisplayItem(new ItemStackBuilder(Material.NAME_TAG).setDisplayName("Edit Name").build())
     .whenInput(chatEvent -> {
         String message = chatEvent.getMessage();
-        if (message.length() > 20) return InputResult.FAIL;
+        if (message.length() > 20) return InputResult.ERROR;
         // Do something with message
         return InputResult.SUCCESS;
     });
