@@ -30,6 +30,7 @@ Before using the GUIAPI, make sure your plugin and server environment meet the f
 
 Add the following entries to your pom at the correct locations:
 
+### Maven
 ```xml
 <repositories>
 ...
@@ -48,6 +49,18 @@ Add the following entries to your pom at the correct locations:
     <version>VERSION</version>
     <scope>provided</scope>
 </dependency>
+```
+### Gradle
+```groovy
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io/' }
+}
+```
+```groovy
+dependencies {
+    implementation 'com.github.downnfalls:GUIAPI:1.0.0'
+}
 ```
 Add the API as dependency to your plugin.yml:
 ```yml
