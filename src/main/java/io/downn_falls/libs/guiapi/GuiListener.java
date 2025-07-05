@@ -4,7 +4,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import io.downn_falls.libs.guiapi.api.Clickable;
 import io.downn_falls.libs.guiapi.api.Editable;
 import io.downn_falls.libs.guiapi.component.*;
-import me.downn_falls.guiapi.component.*;
 import io.downn_falls.libs.guiapi.utils.GuiUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
