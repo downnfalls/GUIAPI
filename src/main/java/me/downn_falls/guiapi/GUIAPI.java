@@ -10,12 +10,16 @@ public final class GUIAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
-        pl = this;
     }
 
     public static void register(Plugin plugin) {
         Bukkit.getPluginManager().registerEvents(new GuiListener(), plugin);
+        pl = plugin;
     }
 
     public static Plugin getPlugin() { return pl; }
+
+    public static GUI createGUI(String title, int rows) {
+        return new GUI(pl, title, rows);
+    }
 }
