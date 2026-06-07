@@ -112,7 +112,7 @@ public class GuiTextInput extends GuiButton implements Clickable {
                 event.getPlayer().sendMessage(result.getMessage() != null ? result.getMessage() : invalidInputMessage);
             } else {
 
-                setText(result.getMessage() != null ? result.getMessage() : event.getMessage());
+                setText(result.getMessage() != null && !result.getMessage().isEmpty() ? result.getMessage() : event.getMessage());
 
                 event.getPlayer().openInventory(getGUI().getInventory());
                 getGUI().repaint();
