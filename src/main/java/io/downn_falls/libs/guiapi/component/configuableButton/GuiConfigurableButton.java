@@ -14,13 +14,13 @@ import java.util.List;
 
 public class GuiConfigurableButton extends GuiButton {
 
-    private GUI configGUI;
+    private ConfigGUI configGUI;
     private final HashMap<String, KeyValueTemplate> keyTemplates = new HashMap<>();
     private final HashMap<String, String> data = new HashMap<>();
 
     public GuiConfigurableButton(GUI gui, String id, int slot) {
         super(gui, id, slot);
-        configGUI = new DefaultConfigGUI(getGUI().getPlugin(), this);
+        configGUI = new ConfigGUI(getGUI().getPlugin(), this);
     }
 
     public GuiConfigurableButton addConfig(String keyId, KeyValueTemplate keyValueTemplate) {
@@ -29,10 +29,10 @@ public class GuiConfigurableButton extends GuiButton {
     }
 
     public void updateConfig() {
-        this.configGUI = new DefaultConfigGUI(getGUI().getPlugin(), this);
+        this.configGUI = new ConfigGUI(getGUI().getPlugin(), this);
     }
 
-    public void setConfigGUI(GUI configGUI) {
+    public void setConfigGUI(ConfigGUI configGUI) {
         this.configGUI = configGUI;
     }
 
@@ -70,6 +70,7 @@ public class GuiConfigurableButton extends GuiButton {
     @Override
     public void onClick(String componentId, InventoryClickEvent event) {
         if (event.isRightClick()) {
+            configGUI.setConfig(data);
             configGUI.open((Player) event.getWhoClicked());
         } else
             super.onClick(componentId, event);

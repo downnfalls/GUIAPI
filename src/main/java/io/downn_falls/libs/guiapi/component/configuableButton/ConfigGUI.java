@@ -11,18 +11,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DefaultConfigGUI extends GUI {
-    public DefaultConfigGUI(Plugin plugin, GuiConfigurableButton parent) {
-        super(plugin, "Configure", 5);
+public class ConfigGUI extends GUI {
 
+    private final Set<GuiTextInput> configs = new HashSet<>();
+
+    public void setConfig(HashMap<String, String> config) {
+        for (GuiTextInput input : configs) {
+            input.setText(config.get(input.getId()));
+        }
+        repaint();
+    }
+
+    public ConfigGUI(Plugin plugin, GuiConfigurableButton parent) {
+        super(plugin, "Configure", 5);
+        build(parent);
+    }
+
+    public void build(GuiConfigurableButton parent) {
         GuiListPage configPanel = new GuiListPage(this, "config_panel", 11, 2, 5, 18, 26);
         configPanel.setNotAvailableButton(new ItemStack(Material.AIR));
         configPanel.setNotAvailableComponent(new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE, 1).setDisplayName("&7---").build());
 
-        Set<GuiTextInput> configs = new HashSet<>();
         for (String key : parent.getKeyTemplates().keySet()) {
             KeyValueTemplate template = parent.getKeyTemplates().get(key);
             GuiTextInput b = new GuiTextInput(this, key, 0);
