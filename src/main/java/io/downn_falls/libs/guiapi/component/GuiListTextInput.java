@@ -86,7 +86,10 @@ public class GuiListTextInput extends GuiButton implements Clickable {
 
             if (enable) {
                 if (event.getClick().equals(ClickType.RIGHT)) {
-                    if (texts.size() > 0) removeText(texts.size() - 1);
+                    if (!texts.isEmpty()) {
+                        removeText(texts.size() - 1);
+                        getGUI().repaint();
+                    }
                 } else {
                     player.closeInventory();
                     GuiListener.GUI_LIST_TEXT_INPUT.put(player, this);
