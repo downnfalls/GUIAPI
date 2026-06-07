@@ -71,14 +71,14 @@ A modular, component-based GUI framework for Spigot/Paper plugins. Build interac
 ### Server
 | Requirement | Version |
 |---|---|
-| Minecraft | 1.16+ (tested on 1.20.1) |
+| Minecraft | 1.20 — Latest (including 26.x) |
 | Server Platform | Spigot, Paper, or any Bukkit-compatible fork |
 
 ### Plugin
 | Requirement | Version |
 |---|---|
 | Java | 17+ |
-| [NBT-API](https://github.com/tr7zw/Item-NBT-API) | 2.11.3+ (must be installed as a plugin on the server) |
+| [NBT-API](https://github.com/tr7zw/Item-NBT-API) | 2.15.7+ (must be installed as a plugin on the server) |
 
 ---
 

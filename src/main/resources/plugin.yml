@@ -4,4 +4,4 @@ main: io.downn_falls.libs.guiapi.GUIAPI
 author: [downn_falls]
 depend:
   - NBTAPI
-api-version: '1.13'
+api-version: '1.20'
