@@ -1144,6 +1144,12 @@ Metadata types supported: `String`, `Integer`, `Double`, `Boolean`, `Long`, `Flo
 
 ---
 
+## 💬 Support
+
+- **Issues & Bug Reports:** If you find a bug or have a feature request, please open an issue on the [GitHub Issues](https://github.com/downnfalls/GUIAPI/issues) page.
+
+---
+
 ## 📄 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
