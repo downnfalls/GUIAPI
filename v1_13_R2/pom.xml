@@ -11,6 +11,11 @@
 
     <artifactId>guiapi-v1_13_R2</artifactId>
 
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>me.downn_falls</groupId>
