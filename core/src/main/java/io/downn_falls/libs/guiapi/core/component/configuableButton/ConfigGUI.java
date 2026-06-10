@@ -2,7 +2,6 @@ package io.downn_falls.libs.guiapi.core.component.configuableButton;
 
 import io.downn_falls.libs.guiapi.core.GUI;
 import io.downn_falls.libs.guiapi.core.GUILibs;
-import io.downn_falls.libs.guiapi.core.ItemStackBuilder;
 import io.downn_falls.libs.guiapi.core.api.InputResult;
 import io.downn_falls.libs.guiapi.core.component.GuiButton;
 import io.downn_falls.libs.guiapi.core.component.GuiListPage;
@@ -10,7 +9,6 @@ import io.downn_falls.libs.guiapi.core.component.GuiTextInput;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;

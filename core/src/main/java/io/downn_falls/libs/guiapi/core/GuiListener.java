@@ -1,11 +1,9 @@
 package io.downn_falls.libs.guiapi.core;
 
 import de.tr7zw.nbtapi.NBT;
-import de.tr7zw.nbtapi.NBTItem;
 import io.downn_falls.libs.guiapi.core.api.Clickable;
 import io.downn_falls.libs.guiapi.core.api.Editable;
 import io.downn_falls.libs.guiapi.core.component.*;
-import io.downn_falls.libs.guiapi.core.utils.GuiUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -16,10 +14,8 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -38,11 +34,11 @@ public class GuiListener implements Listener {
         if (event.getInventory().getHolder() instanceof GuiInventoryHolder inventoryHolder) {
             if (inventoryHolder.getPlugin() != this.guiLibs.getPlugin()) return;
 
-            if (GUI.guis.containsKey(inventoryHolder.getInventoryUUID())) {
-                GUI gui = GUI.guis.get(inventoryHolder.getInventoryUUID());
+            if (guiLibs.getGuis().containsKey(inventoryHolder.getInventoryUUID())) {
+                GUI gui = guiLibs.getGuis().get(inventoryHolder.getInventoryUUID());
                 if (event.getClickedInventory() != null) {
                     if (event.getClickedInventory().getType().equals(InventoryType.CHEST)) {
-                        if (event.getCurrentItem() != null) {
+                        if (event.getCurrentItem() != null && !event.getCurrentItem().getType().equals(Material.AIR)) {
 
                             NBT.get(event.getCurrentItem(), nbt -> {
                                 String rawComponentId = nbt.getString("component-id");
@@ -137,7 +133,7 @@ public class GuiListener implements Listener {
     public void inventoryDrag(InventoryDragEvent event) {
         if (event.getInventory().getHolder() instanceof GuiInventoryHolder inventoryHolder) {
             if (inventoryHolder.getPlugin() != this.guiLibs.getPlugin()) return;
-            if (GUI.guis.containsKey(inventoryHolder.getInventoryUUID())) {
+            if (guiLibs.getGuis().containsKey(inventoryHolder.getInventoryUUID())) {
                 if (contain(event.getRawSlots(), event.getInventory().getSize())) {
                     event.setCancelled(true);
                 }
@@ -145,7 +141,7 @@ public class GuiListener implements Listener {
         }
     }
 
-    public static boolean contain(Set<Integer> numbers, int inventorySize) {
+    private boolean contain(Set<Integer> numbers, int inventorySize) {
         for (int number : numbers) {
             if (number <= inventorySize - 1) {
                 return true;
@@ -173,7 +169,7 @@ public class GuiListener implements Listener {
     public void returnItem(InventoryCloseEvent event) {
         if (event.getInventory().getHolder() instanceof GuiInventoryHolder inventoryHolder) {
 
-            GUI gui = GUI.guis.get(inventoryHolder.getInventoryUUID());
+            GUI gui = guiLibs.getGuis().get(inventoryHolder.getInventoryUUID());
 
             List<GuiEditableSlot> toClear = new ArrayList<>();
 
@@ -211,10 +207,10 @@ public class GuiListener implements Listener {
         try {
             if (event.getInventory().getHolder() instanceof GuiInventoryHolder) {
 
-                for (var entry : GUI.guis.entrySet()) {
+                for (var entry : guiLibs.getGuis().entrySet()) {
 
                     if (entry.getValue().getInventory() != null && entry.getValue().getInventory().getViewers().isEmpty()) {
-                        GUI.guis.remove(entry.getKey());
+                        guiLibs.getGuis().remove(entry.getKey());
                         entry.getValue().clearUpdater();
                     }
                 }

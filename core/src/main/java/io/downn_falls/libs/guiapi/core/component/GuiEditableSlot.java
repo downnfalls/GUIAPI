@@ -3,7 +3,6 @@ package io.downn_falls.libs.guiapi.core.component;
 import io.downn_falls.libs.guiapi.core.GUI;
 import io.downn_falls.libs.guiapi.core.GUILibs;
 import io.downn_falls.libs.guiapi.core.GuiRenderer;
-import io.downn_falls.libs.guiapi.core.ItemStackBuilder;
 import io.downn_falls.libs.guiapi.core.api.Clickable;
 import io.downn_falls.libs.guiapi.core.api.Editable;
 import org.bukkit.Material;

@@ -130,7 +130,7 @@ public class ModernAdapter implements VersionAdapter {
         itemStack.setThrower(uuid);
     }
 
-    private static String applyGradient(String startHex, String endHex, String text) {
+    private String applyGradient(String startHex, String endHex, String text) {
         StringBuilder sb = new StringBuilder();
         Color start = Color.decode(startHex);
         Color end = Color.decode(endHex);

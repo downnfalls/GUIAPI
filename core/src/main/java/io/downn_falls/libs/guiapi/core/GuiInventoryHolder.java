@@ -3,7 +3,6 @@ package io.downn_falls.libs.guiapi.core;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 

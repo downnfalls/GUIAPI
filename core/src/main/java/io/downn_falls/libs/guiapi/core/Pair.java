@@ -30,7 +30,7 @@ public class Pair<K, V> {
         if (this == o) {
             return true;
         } else if (o != null && this.getClass() == o.getClass()) {
-            Pair<?, ?> pair = (Pair)o;
+            Pair<?, ?> pair = (Pair) o;
             return this.key.equals(pair.key) && this.value.equals(pair.value);
         } else {
             return false;

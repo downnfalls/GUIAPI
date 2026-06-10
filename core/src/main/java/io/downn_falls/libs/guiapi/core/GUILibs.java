@@ -12,11 +12,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class GUILibs {
 
     private final Plugin plugin;
     private final VersionAdapter adapter;
+
+    private final HashMap<UUID, GUI> guis = new HashMap<>();
 
     private final HashMap<Player, GuiTextInput> guiTextInput = new HashMap<>();
     private final HashMap<Player, GuiListTextInput> guiListTextInput = new HashMap<>();
@@ -102,9 +105,10 @@ public class GUILibs {
         return new ItemStackBuilder(this.adapter);
     }
 
-    // ย้ายระบบหัวผู้เล่นมาอยู่ตรงนี้ เพื่อดึงข้อมูลหัวผ่านเวอร์ชันอะแดปเตอร์ได้โดยตรงและปลอดภัย!
     public ItemStackBuilder getPlayerHeadBuilder(OfflinePlayer player) {
         return new ItemStackBuilder(this.adapter, this.adapter.getPlayerHead(player));
     }
+
+    public HashMap<UUID, GUI> getGuis() { return guis; }
 
 }

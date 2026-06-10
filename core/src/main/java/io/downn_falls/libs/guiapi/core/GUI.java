@@ -12,7 +12,6 @@ import java.util.*;
 
 public class GUI {
 
-    public static HashMap<UUID, GUI> guis = new HashMap<>();
     private final List<Task> updater = new ArrayList<>();
     private final GUILibs guiLibs;
     private String title;
@@ -35,7 +34,7 @@ public class GUI {
     }
 
     public void revalidate() {
-        guis.put(inventoryUUID, this);
+        guiLibs.getGuis().put(inventoryUUID, this);
     }
 
     public void repaint() {
@@ -50,12 +49,12 @@ public class GUI {
 
     public void repaintAll() {
         try {
-            guis.values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).toList().forEach(GUI::repaint);
+            guiLibs.getGuis().values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).toList().forEach(GUI::repaint);
         } catch (Exception ignored) {}
     }
 
     public void closeAll() {
-        for (var gui : guis.values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).toList()) {
+        for (var gui : guiLibs.getGuis().values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).toList()) {
             try {
                 for (HumanEntity h : gui.getInventory().getViewers()) h.closeInventory();
             } catch (Exception ignored) {}
@@ -127,7 +126,7 @@ public class GUI {
         this.inventory = inventory;
 
         player.openInventory(inventory);
-        guis.put(inventoryUUID, this);
+        guiLibs.getGuis().put(inventoryUUID, this);
     }
 
     public void clearUpdater() {

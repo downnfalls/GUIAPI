@@ -1,7 +1,5 @@
 package io.downn_falls.libs.guiapi.core.api;
 
-import io.downn_falls.libs.guiapi.core.utils.GuiUtils;
-
 public class InputResult {
     public static InputResult SUCCESS = new InputResult(null, false);
     public static InputResult ERROR = new InputResult(null, true);
