@@ -63,60 +63,62 @@ public class GuiListener implements Listener {
 
                         if (gui.isEditable()) {
                             if (event.getClick().equals(ClickType.SHIFT_LEFT) || event.getClick().equals(ClickType.SHIFT_RIGHT)) {
-                                event.setCancelled(true);
-                                for (Editable editable : gui.getEditableList()) {
-                                    GuiEditableSlot editableSlot = (GuiEditableSlot) editable;
-                                    if (editableSlot.getItem() == null) {
+                                if (event.getCurrentItem() != null && !event.getCurrentItem().getType().equals(Material.AIR)) {
+                                    event.setCancelled(true);
+                                    for (Editable editable : gui.getEditableList()) {
+                                        GuiEditableSlot editableSlot = (GuiEditableSlot) editable;
+                                        if (editableSlot.getItem() == null) {
 
-                                        boolean cancel = editableSlot.testOnPut((Player) event.getWhoClicked(), event.getCurrentItem()) || editableSlot.testOnPickup((Player) event.getWhoClicked(), null);
+                                            boolean cancel = editableSlot.testOnPut((Player) event.getWhoClicked(), event.getCurrentItem()) || editableSlot.testOnPickup((Player) event.getWhoClicked(), null);
 
-                                        if (!cancel) {
-                                            editableSlot.setItem(event.getCurrentItem());
-                                            event.setCurrentItem(null);
-                                            editableSlot.getGUI().repaint();
-                                            break;
-                                        }
+                                            if (!cancel) {
+                                                editableSlot.setItem(event.getCurrentItem());
+                                                event.setCurrentItem(null);
+                                                editableSlot.getGUI().repaint();
+                                                break;
+                                            }
 
-                                    } else {
+                                        } else {
 
-                                        if (editableSlot.getItem().isSimilar(event.getCurrentItem())) {
-                                            if (editableSlot.getItem().getAmount() < editableSlot.getItem().getMaxStackSize()) {
+                                            if (editableSlot.getItem().isSimilar(event.getCurrentItem())) {
+                                                if (editableSlot.getItem().getAmount() < editableSlot.getItem().getMaxStackSize()) {
 
-                                                if (editableSlot.getItem().getAmount() + event.getCurrentItem().getAmount() > editableSlot.getItem().getMaxStackSize()) {
+                                                    if (editableSlot.getItem().getAmount() + event.getCurrentItem().getAmount() > editableSlot.getItem().getMaxStackSize()) {
 
-                                                    int filledAmount = editableSlot.getItem().getMaxStackSize() - editableSlot.getItem().getAmount();
+                                                        int filledAmount = editableSlot.getItem().getMaxStackSize() - editableSlot.getItem().getAmount();
 
-                                                    ItemStack i = editableSlot.getItem().clone();
-                                                    i.setAmount(editableSlot.getItem().getMaxStackSize());
-                                                    ItemStack i2 = event.getCurrentItem().clone();
-                                                    i2.setAmount(event.getCurrentItem().getAmount() - filledAmount);
+                                                        ItemStack i = editableSlot.getItem().clone();
+                                                        i.setAmount(editableSlot.getItem().getMaxStackSize());
+                                                        ItemStack i2 = event.getCurrentItem().clone();
+                                                        i2.setAmount(event.getCurrentItem().getAmount() - filledAmount);
 
-                                                    boolean cancel = editableSlot.testOnPut((Player) event.getWhoClicked(), i) || editableSlot.testOnPickup((Player) event.getWhoClicked(), i2);
+                                                        boolean cancel = editableSlot.testOnPut((Player) event.getWhoClicked(), i) || editableSlot.testOnPickup((Player) event.getWhoClicked(), i2);
 
-                                                    if (!cancel) {
-                                                        event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - filledAmount);
-                                                        editableSlot.getItem().setAmount(editableSlot.getItem().getMaxStackSize());
-                                                        gui.repaint();
-                                                        break;
-                                                    }
+                                                        if (!cancel) {
+                                                            event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - filledAmount);
+                                                            editableSlot.getItem().setAmount(editableSlot.getItem().getMaxStackSize());
+                                                            gui.repaint();
+                                                            break;
+                                                        }
 
-                                                } else {
+                                                    } else {
 
-                                                    ItemStack i = editableSlot.getItem().clone();
-                                                    i.setAmount(editableSlot.getItem().getAmount() + event.getCurrentItem().getAmount());
+                                                        ItemStack i = editableSlot.getItem().clone();
+                                                        i.setAmount(editableSlot.getItem().getAmount() + event.getCurrentItem().getAmount());
 
-                                                    boolean cancel = editableSlot.testOnPut((Player) event.getWhoClicked(), i) || editableSlot.testOnPickup((Player) event.getWhoClicked(), null);
+                                                        boolean cancel = editableSlot.testOnPut((Player) event.getWhoClicked(), i) || editableSlot.testOnPickup((Player) event.getWhoClicked(), null);
 
-                                                    if (!cancel) {
-                                                        editableSlot.getItem().setAmount(editableSlot.getItem().getAmount() + event.getCurrentItem().getAmount());
-                                                        event.setCurrentItem(null);
-                                                        gui.repaint();
-                                                        break;
+                                                        if (!cancel) {
+                                                            editableSlot.getItem().setAmount(editableSlot.getItem().getAmount() + event.getCurrentItem().getAmount());
+                                                            event.setCurrentItem(null);
+                                                            gui.repaint();
+                                                            break;
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
 
+                                        }
                                     }
                                 }
                             }

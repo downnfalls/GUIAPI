@@ -5,6 +5,7 @@ import io.downn_falls.libs.guiapi.core.GUILibs;
 import io.downn_falls.libs.guiapi.core.GuiRenderer;
 import io.downn_falls.libs.guiapi.core.api.Clickable;
 import io.downn_falls.libs.guiapi.core.api.Editable;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -143,7 +144,8 @@ public class GuiEditableSlot extends GuiComponent implements Editable, Clickable
 
             }
 
-        } else if (event.getClick().equals(ClickType.RIGHT)) {
+        }
+        else if (event.getClick().equals(ClickType.RIGHT)) {
 
             if (this.item != null && cursor != null && this.item.isSimilar(cursor)) {
 
@@ -157,7 +159,12 @@ public class GuiEditableSlot extends GuiComponent implements Editable, Clickable
                     boolean cancel = onPut.apply((Player)event.getWhoClicked(), i) || onPickup.apply((Player)event.getWhoClicked(), i2);
 
                     if (!cancel) {
-                        cursor.setAmount(cursor.getAmount() - 1);
+                        if (cursor.getAmount() - 1 <= 0) {
+                            event.getView().setCursor(null);
+                        } else {
+                            cursor.setAmount(cursor.getAmount() - 1);
+                        }
+
                         this.item.setAmount(this.item.getAmount() + 1);
                     }
                 }
@@ -209,7 +216,8 @@ public class GuiEditableSlot extends GuiComponent implements Editable, Clickable
 
                 }
             }
-        } else if (event.getClick().equals(ClickType.SHIFT_RIGHT) || event.getClick().equals(ClickType.SHIFT_LEFT)) {
+        }
+        else if (event.getClick().equals(ClickType.SHIFT_RIGHT) || event.getClick().equals(ClickType.SHIFT_LEFT)) {
             if (this.item != null && cursor == null) {
 
                 boolean cancel = onPut.apply((Player)event.getWhoClicked(), null) || onPickup.apply((Player)event.getWhoClicked(), this.item);
