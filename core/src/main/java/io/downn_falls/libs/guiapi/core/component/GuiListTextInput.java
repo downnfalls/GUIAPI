@@ -94,7 +94,9 @@ public class GuiListTextInput extends GuiButton implements Clickable {
     public void onClick(String componentId, InventoryClickEvent event) {
         super.onClick(componentId, event);
 
-        if (!isListenerCancel() && event.getWhoClicked() instanceof Player player) {
+        if (!isListenerCancel() && event.getWhoClicked() instanceof Player) {
+
+            Player player = (Player) event.getWhoClicked();
 
             if (enable) {
                 if (event.getClick().equals(ClickType.RIGHT)) {

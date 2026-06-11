@@ -8,6 +8,7 @@ import io.downn_falls.libs.guiapi.core.utils.GuiUtils;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiListPage extends GuiListPanel {
@@ -66,7 +67,7 @@ public class GuiListPage extends GuiListPanel {
 
         renderer.addMetadata("page", page);
 
-        List<GuiComponent> components = getComponents().values().stream().toList();
+        List<GuiComponent> components = new ArrayList<>(getComponents().values());
 
         int space = getRow() * getColumn();
 
@@ -86,7 +87,7 @@ public class GuiListPage extends GuiListPanel {
         int l = page * space - space;
         for (int i = 0; i < space; l++) {
 
-            if (i < components.size() && l < components.size() && !(hideIfDisable && components.get(l) instanceof GuiButton button && !button.isEnable())) {
+            if (i < components.size() && l < components.size() && !(hideIfDisable && components.get(l) instanceof GuiButton && !((GuiButton) components.get(l)).isEnable())) {
                 components.get(l).r(new GuiRenderer(renderer.getInventory(), new GuiRenderer(renderer.getInventory(), renderer, i, 1), components.get(l).getSlot(), components.get(l).getColumn()));
             }
             else

@@ -85,7 +85,10 @@ public class GuiItemChooser extends GuiButton implements Clickable {
 
         super.onClick(componentId, event);
 
-        if (!isListenerCancel() && event.getWhoClicked() instanceof Player player) {
+        if (!isListenerCancel() && event.getWhoClicked() instanceof Player) {
+
+            Player player = (Player) event.getWhoClicked();
+
             if (enable) {
                 if (event.getClick().equals(ClickType.RIGHT)) {
                     setChooseItem(null, true);
@@ -100,7 +103,10 @@ public class GuiItemChooser extends GuiButton implements Clickable {
     }
 
     public void onChoose(InventoryClickEvent event) {
-        if (event.getWhoClicked() instanceof Player player) {
+        if (event.getWhoClicked() instanceof Player) {
+
+            Player player = (Player) event.getWhoClicked();
+
             setChooseItem(event.getCurrentItem());
             player.openInventory(getGUI().getInventory());
             getGUI().repaint();

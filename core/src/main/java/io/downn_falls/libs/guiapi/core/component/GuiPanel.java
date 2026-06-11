@@ -67,7 +67,10 @@ public class GuiPanel extends GuiComponent implements Clickable {
         if (getComponents().containsKey(componentId)) {
             GuiComponent component = getComponents().get(componentId);
             if (!(component instanceof Editable)) event.setCancelled(true);
-            if (component instanceof Clickable clickable) {
+            if (component instanceof Clickable) {
+
+                Clickable clickable = (Clickable) component;
+
                 clickable.onClick(componentId, event);
             }
         }

@@ -5,6 +5,7 @@ import io.downn_falls.libs.guiapi.core.GuiRenderer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiListPanel extends GuiPanel {
@@ -31,10 +32,10 @@ public class GuiListPanel extends GuiPanel {
             renderer.setSlot(i, new ItemStack(Material.AIR, 1));
         }
 
-        List<GuiComponent> components = getComponents().values().stream().toList();
+        List<GuiComponent> components = new ArrayList<>(getComponents().values());
         for (int i = 0; i < getRow() * getColumn() - 1 && i < components.size(); i++) {
 
-            if (hideIfDisable && components.get(i) instanceof GuiButton button && !button.isEnable()) continue;
+            if (hideIfDisable && components.get(i) instanceof GuiButton && !((GuiButton) components.get(i)).isEnable()) continue;
             components.get(i).r(new GuiRenderer(renderer.getInventory(), new GuiRenderer(renderer.getInventory(), renderer, i, 1), components.get(i).getSlot(), components.get(i).getColumn()));
 
         }

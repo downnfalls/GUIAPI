@@ -66,7 +66,7 @@ public class GuiConfigurableButton extends GuiButton {
         }
 
 
-        ItemStack item = ItemStackBuilder.replaceLore(enable ? displayItem : notEnableButton, replacement.toArray(String[]::new));
+        ItemStack item = ItemStackBuilder.replaceLore(enable ? displayItem : notEnableButton, replacement.toArray(new String[0]));
 
         renderer.setSlot(0, guiLibs.getItemBuilder(item).addItemTag("component-id", getFullId()).build());
     }

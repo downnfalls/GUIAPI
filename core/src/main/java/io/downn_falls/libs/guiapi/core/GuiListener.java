@@ -15,9 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GuiListener implements Listener {
 
@@ -31,7 +29,10 @@ public class GuiListener implements Listener {
     public void onInvClick(InventoryClickEvent event) {
         if (event.getInventory() == null) return;
 
-        if (event.getInventory().getHolder() instanceof GuiInventoryHolder inventoryHolder) {
+        if (event.getInventory().getHolder() instanceof GuiInventoryHolder) {
+
+            GuiInventoryHolder inventoryHolder = (GuiInventoryHolder) event.getInventory().getHolder();
+
             if (inventoryHolder.getPlugin() != this.guiLibs.getPlugin()) return;
 
             if (guiLibs.getGuis().containsKey(inventoryHolder.getInventoryUUID())) {
@@ -48,7 +49,10 @@ public class GuiListener implements Listener {
                                 if (gui.getComponents().containsKey(componentIDs[0])) {
                                     GuiComponent component = gui.getComponents().get(componentIDs[0]);
                                     event.setCancelled(true);
-                                    if (component instanceof Clickable clickable) {
+                                    if (component instanceof Clickable) {
+
+                                        Clickable clickable = (Clickable) component;
+
                                         clickable.onClick(rawComponentId, event);
                                     }
                                 } else {
@@ -133,7 +137,10 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void inventoryDrag(InventoryDragEvent event) {
-        if (event.getInventory().getHolder() instanceof GuiInventoryHolder inventoryHolder) {
+        if (event.getInventory().getHolder() instanceof GuiInventoryHolder) {
+
+            GuiInventoryHolder inventoryHolder = (GuiInventoryHolder) event.getInventory().getHolder();
+
             if (inventoryHolder.getPlugin() != this.guiLibs.getPlugin()) return;
             if (guiLibs.getGuis().containsKey(inventoryHolder.getInventoryUUID())) {
                 if (contain(event.getRawSlots(), event.getInventory().getSize())) {
@@ -154,7 +161,10 @@ public class GuiListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onItemChoose(InventoryClickEvent event) {
-        if (event.getWhoClicked() instanceof Player player) {
+        if (event.getWhoClicked() instanceof Player) {
+
+            Player player = (Player) event.getWhoClicked();
+
             if (guiLibs.getGuiChooseItem().containsKey(player)) {
                 if (event.getCurrentItem() != null && !event.getCurrentItem().getType().equals(Material.AIR)) {
                     event.setCancelled(true);
@@ -169,14 +179,19 @@ public class GuiListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void returnItem(InventoryCloseEvent event) {
-        if (event.getInventory().getHolder() instanceof GuiInventoryHolder inventoryHolder) {
+        if (event.getInventory().getHolder() instanceof GuiInventoryHolder) {
+
+            GuiInventoryHolder inventoryHolder = (GuiInventoryHolder) event.getInventory().getHolder();
 
             GUI gui = guiLibs.getGuis().get(inventoryHolder.getInventoryUUID());
 
             List<GuiEditableSlot> toClear = new ArrayList<>();
 
             for (Editable editable : gui.getEditableList()) {
-                if (editable instanceof GuiEditableSlot editableSlot) {
+                if (editable instanceof GuiEditableSlot) {
+
+                    GuiEditableSlot editableSlot = (GuiEditableSlot) editable;
+
                     if (editableSlot.isReturnItem()) {
                         if (editableSlot.getItem() != null) {
 
@@ -209,7 +224,7 @@ public class GuiListener implements Listener {
         try {
             if (event.getInventory().getHolder() instanceof GuiInventoryHolder) {
 
-                for (var entry : guiLibs.getGuis().entrySet()) {
+                for (Map.Entry<UUID, GUI> entry : guiLibs.getGuis().entrySet()) {
 
                     if (entry.getValue().getInventory() != null && entry.getValue().getInventory().getViewers().isEmpty()) {
                         guiLibs.getGuis().remove(entry.getKey());

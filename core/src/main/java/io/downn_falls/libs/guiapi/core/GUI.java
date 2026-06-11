@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GUI {
 
@@ -48,12 +49,12 @@ public class GUI {
 
     public void repaintAll() {
         try {
-            guiLibs.getGuis().values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).toList().forEach(GUI::repaint);
+            guiLibs.getGuis().values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).forEach(GUI::repaint);
         } catch (Exception ignored) {}
     }
 
     public void closeAll() {
-        for (var gui : guiLibs.getGuis().values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).toList()) {
+        for (GUI gui : guiLibs.getGuis().values().stream().filter(gui -> gui.getGroupUUID().equals(this.groupUUID)).collect(Collectors.toList())) {
             try {
                 for (HumanEntity h : gui.getInventory().getViewers()) h.closeInventory();
             } catch (Exception ignored) {}
@@ -74,7 +75,7 @@ public class GUI {
 
             try {
                 if (inventory.getViewers().isEmpty()) {
-                    for (var bt : updater) {
+                    for (Task bt : updater) {
                         guiLibs.getAdapter().cancelTask(bt);
                         updater.clear();
                     }
@@ -108,13 +109,19 @@ public class GUI {
     }
 
     private void collectEditable(GuiComponent component, List<Editable> list) {
-        if (component instanceof Editable editable) {
+        if (component instanceof Editable) {
+
+            Editable editable = (Editable) component;
+
             if (!list.contains(editable)) {
                 list.add(editable);
             }
         }
 
-        if (component instanceof GuiPanel panel) {
+        if (component instanceof GuiPanel) {
+
+            GuiPanel panel = (GuiPanel) component;
+
             for (GuiComponent child : panel.getComponents().values()) {
                 collectEditable(child, list);
             }

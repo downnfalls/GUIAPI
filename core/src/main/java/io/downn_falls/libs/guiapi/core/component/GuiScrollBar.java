@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiScrollBar extends GuiListPanel {
@@ -65,7 +66,7 @@ public class GuiScrollBar extends GuiListPanel {
 
         renderer.addMetadata("scroll", scroll);
 
-        List<GuiComponent> components = getComponents().values().stream().toList();
+        List<GuiComponent> components = new ArrayList<>(getComponents().values());
 
         ItemStack leftButton = guiLibs.getItemBuilder(GuiUtils.isScrollValid(components.size(), scroll-1, getColumn(), 1) ? this.leftButton : notAvailableButton).addItemTag("component-id", getFullId()+".scroll-left").build();
         ItemStack rightButton = guiLibs.getItemBuilder(GuiUtils.isScrollValid(components.size(), scroll+1, getColumn(), 1) ? this.rightButton : notAvailableButton).addItemTag("component-id", getFullId()+".scroll-right").build();
@@ -82,7 +83,7 @@ public class GuiScrollBar extends GuiListPanel {
 
         int l = scroll - 1;
         for (int i = 0; i < getRow() * getColumn(); l++) {
-            if (i < components.size() && l < components.size() && !(hideIfDisable && components.get(l) instanceof GuiButton button && !button.isEnable()))
+            if (i < components.size() && l < components.size() && !(hideIfDisable && components.get(l) instanceof GuiButton && !((GuiButton) components.get(l)).isEnable()))
                 components.get(l).r(new GuiRenderer(renderer.getInventory(), new GuiRenderer(renderer.getInventory(), renderer, i, 1), components.get(l).getSlot(), components.get(l).getColumn()));
             else
                 renderer.setSlot(i, notAvailableComponent);
