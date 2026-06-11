@@ -34,6 +34,8 @@ public class GUILibs {
 
         String versionString = Bukkit.getServer().getBukkitVersion().split("-")[0];
         String[] split = versionString.split("\\.");
+
+        int newMajor = Integer.parseInt(split[0]);
         int major = Integer.parseInt(split[1]);
         int minor = split.length > 2 ? Integer.parseInt(split[2]) : 0;
 
@@ -50,11 +52,11 @@ public class GUILibs {
 
         plugin.getLogger().info("GUIAPI initialized for " + plugin.getName() + " on version: " + versionString);
 
-        if ((major == 20 && minor >= 5 || major > 20) && isPaper) {
+        if ((major == 20 && minor >= 5 || major > 20 || newMajor >= 26) && isPaper) {
             return new io.downn_falls.libs.guiapi.v1_20_R4.ComponentAdapter();
-        } else if ((major == 19 && minor >= 4 || major == 20) && isPaper) {
+        } else if ((major == 19 && minor >= 4 || major == 20 || newMajor >= 26) && isPaper) {
             return new io.downn_falls.libs.guiapi.v1_19_R3.FoliaAdapter();
-        } else if (major >= 16) {
+        } else if (major >= 16 || newMajor >= 26) {
             return new io.downn_falls.libs.guiapi.v1_16_R3.ModernAdapter();
         } else if (major >= 13) {
             return new io.downn_falls.libs.guiapi.v1_13_R2.FlatteningAdapter();
