@@ -81,7 +81,6 @@ public class GuiEditableSlot extends GuiComponent implements Editable, Clickable
     @Override
     public void render(GuiRenderer renderer) {
         this.getGUI().setEditable(true);
-        this.getGUI().addEditable(this);
 
         updateListeners.run();
 

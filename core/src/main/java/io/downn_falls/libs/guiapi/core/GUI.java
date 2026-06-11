@@ -3,6 +3,7 @@ package io.downn_falls.libs.guiapi.core;
 import io.downn_falls.libs.guiapi.api.Task;
 import io.downn_falls.libs.guiapi.core.api.Editable;
 import io.downn_falls.libs.guiapi.core.component.GuiComponent;
+import io.downn_falls.libs.guiapi.core.component.GuiPanel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -21,7 +22,6 @@ public class GUI {
     private final UUID inventoryUUID = UUID.randomUUID();
     private boolean isEditable = false;
     private UUID groupUUID = inventoryUUID;
-    private final List<Editable> editableList = new ArrayList<>();
 
     public GUI(GUILibs guiLibs, String title, int rows) {
         this.guiLibs = guiLibs;
@@ -40,7 +40,6 @@ public class GUI {
     public void repaint() {
         if (inventory != null) {
             clearUpdater();
-            editableList.clear();
             for (GuiComponent component : getComponents().values()) {
                 component.r(new GuiRenderer(inventory, null, component.getSlot(), component.getColumn()));
             }
@@ -97,11 +96,30 @@ public class GUI {
         isEditable = editable;
     }
 
-    public void addEditable(Editable editable) {
-        editableList.add(editable);
+    public List<Editable> getEditableList() {
+
+        List<Editable> list = new ArrayList<>();
+
+        for (GuiComponent component : getComponents().values()) {
+            collectEditable(component, list);
+        }
+
+        return list;
     }
 
-    protected List<Editable> getEditableList() { return editableList; }
+    private void collectEditable(GuiComponent component, List<Editable> list) {
+        if (component instanceof Editable editable) {
+            if (!list.contains(editable)) {
+                list.add(editable);
+            }
+        }
+
+        if (component instanceof GuiPanel panel) {
+            for (GuiComponent child : panel.getComponents().values()) {
+                collectEditable(child, list);
+            }
+        }
+    }
 
     public boolean isEditable() {
         return isEditable;
@@ -118,7 +136,6 @@ public class GUI {
         Inventory inventory = Bukkit.createInventory(new GuiInventoryHolder(guiLibs.getPlugin(), inventoryUUID), size, title);
 
         clearUpdater();
-        editableList.clear();
         for (GuiComponent component : getComponents().values()) {
             component.r(new GuiRenderer(inventory, null, component.getSlot(), component.getColumn()));
         }
