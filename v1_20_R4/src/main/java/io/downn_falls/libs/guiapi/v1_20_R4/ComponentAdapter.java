@@ -120,29 +120,26 @@ public class ComponentAdapter implements VersionAdapter {
     public String colorize(String s) {
         if (s == null || s.isEmpty()) return "";
 
-        // 1. Convert your custom Hex syntax (&#FF0000) to MiniMessage syntax (<#FF0000>)
         s = s.replaceAll("&#([a-fA-F0-9]{6})", "<#$1>");
 
         Pattern oldGradientPattern = Pattern.compile("<gradient:(#[a-fA-F0-9]{6})>(.*?)<(#[a-fA-F0-9]{6})>");
         Matcher matcher = oldGradientPattern.matcher(s);
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             matcher.appendReplacement(sb, "<gradient:" + matcher.group(1) + ":" + matcher.group(3) + ">" + matcher.group(2) + "</gradient>");
         }
         matcher.appendTail(sb);
         s = sb.toString();
 
-        // 3. Parse the modern tags (Gradients & Hex) into a Paper Component
         Component component = MiniMessage.miniMessage().deserialize(s);
 
-        // 4. Serialize it back to a Legacy String so your 1.8.8 core module can read the RGB values!
         String modernColorized = LegacyComponentSerializer.builder()
                 .character('§')
                 .hexColors()
+                .useUnusualXRepeatedCharacterHexFormat()
                 .build()
                 .serialize(component);
 
-        // 5. Finally, translate any standard leftover Bukkit codes (&a, &l, &n, etc.)
         return modernColorized.replaceAll("(?i)&([0-9a-fk-or])", "§$1");
     }
 
