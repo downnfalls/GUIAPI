@@ -50,7 +50,7 @@ public class GUILibs {
             } catch (ClassNotFoundException ignored2) {}
         }
 
-        plugin.getLogger().info("GUIAPI initialized for " + plugin.getName() + " on version: " + versionString);
+        plugin.getLogger().info("GUIAPI initialized for " + plugin.getName() + " on version: " + Bukkit.getVersion());
 
         if ((major == 20 && minor >= 5 || major > 20 || newMajor >= 26) && isPaper) {
             return new io.downn_falls.libs.guiapi.v1_20_R4.ComponentAdapter();

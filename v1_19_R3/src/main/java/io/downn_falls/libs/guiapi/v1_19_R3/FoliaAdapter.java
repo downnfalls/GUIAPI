@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class FoliaAdapter implements VersionAdapter {
 
-    private final boolean isFolia = Bukkit.getVersion().contains("Folia");
+    private final boolean isFolia = isFolia();
 
     @Override
     public ItemStack getPlayerHead(OfflinePlayer player) {
@@ -153,5 +153,14 @@ public class FoliaAdapter implements VersionAdapter {
     @Override
     public void setThrower(Item itemStack, UUID uuid) {
         itemStack.setThrower(uuid);
+    }
+
+    private boolean isFolia() {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 }
