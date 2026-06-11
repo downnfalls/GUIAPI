@@ -120,11 +120,13 @@ public class ComponentAdapter implements VersionAdapter {
     public String colorize(String s) {
         if (s == null || s.isEmpty()) return "";
 
+        s = s.replace('§', '&');
+
         s = s.replaceAll("&#([a-fA-F0-9]{6})", "<#$1>");
 
         Pattern oldGradientPattern = Pattern.compile("<gradient:(#[a-fA-F0-9]{6})>(.*?)<(#[a-fA-F0-9]{6})>");
         Matcher matcher = oldGradientPattern.matcher(s);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (matcher.find()) {
             matcher.appendReplacement(sb, "<gradient:" + matcher.group(1) + ":" + matcher.group(3) + ">" + matcher.group(2) + "</gradient>");
         }
