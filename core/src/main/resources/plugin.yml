@@ -3,4 +3,5 @@ version: '1.0'
 main: io.downn_falls.libs.guiapi.core.GUIAPI
 author: downn_falls
 depend: [NBTAPI]
+folia-supported: true
 api-version: '1.13'
