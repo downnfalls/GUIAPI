@@ -5,7 +5,6 @@ import io.downn_falls.libs.guiapi.core.GUILibs;
 import io.downn_falls.libs.guiapi.core.GuiRenderer;
 import io.downn_falls.libs.guiapi.core.api.Clickable;
 import io.downn_falls.libs.guiapi.core.api.Editable;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
