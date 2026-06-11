@@ -1,6 +1,6 @@
 package io.downn_falls.libs.guiapi.core;
 
-import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.NBT;
 import io.downn_falls.libs.guiapi.core.utils.GuiUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

@@ -6,7 +6,7 @@
     <parent>
         <groupId>me.downn_falls</groupId>
         <artifactId>guiapi</artifactId>
-        <version>1.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>guiapi-core</artifactId>
@@ -35,12 +35,21 @@
                 <version>3.5.3</version>
                 <executions>
                     <execution>
+                        <id>shade</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <shadedPattern>io.downn_falls.guiapi.nbtapi</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -55,6 +64,7 @@
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
+            <layout>default</layout>
         </repository>
     </repositories>
 
@@ -67,9 +77,8 @@
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api-plugin</artifactId>
+            <artifactId>item-nbt-api</artifactId>
             <version>2.15.7</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

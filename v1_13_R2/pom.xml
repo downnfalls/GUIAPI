@@ -6,7 +6,7 @@
     <parent>
         <groupId>me.downn_falls</groupId>
         <artifactId>guiapi</artifactId>
-        <version>1.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>guiapi-v1_13_R2</artifactId>

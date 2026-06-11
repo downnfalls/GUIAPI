@@ -1,6 +1,6 @@
 package io.downn_falls.libs.guiapi.core.component;
 
-import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.NBT;
 import io.downn_falls.libs.guiapi.core.GUI;
 import io.downn_falls.libs.guiapi.core.GUILibs;
 import io.downn_falls.libs.guiapi.core.GuiRenderer;

@@ -1,6 +1,6 @@
 package io.downn_falls.libs.guiapi.core;
 
-import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.NBT;
 import io.downn_falls.libs.guiapi.core.api.Clickable;
 import io.downn_falls.libs.guiapi.core.api.Editable;
 import io.downn_falls.libs.guiapi.core.component.*;
