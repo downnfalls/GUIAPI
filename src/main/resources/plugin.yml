@@ -1,7 +1,0 @@
-name: GUIAPI
-version: '1.0'
-main: io.downn_falls.libs.guiapi.GUIAPI
-author: [downn_falls]
-depend:
-  - NBTAPI
-api-version: '1.20'

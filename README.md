@@ -151,8 +151,8 @@ depend: [GUIAPI]
 ### 1. Initialize the API
 
 ```java
-import io.downn_falls.libs.guiapi.GUIAPI;
-import io.downn_falls.libs.guiapi.GUILibs;
+import io.downn_falls.libs.guiapi.core.GUIAPI;
+import io.downn_falls.libs.guiapi.core.GUILibs;
 
 public class MyPlugin extends JavaPlugin {
     private GUILibs guiLibs;
