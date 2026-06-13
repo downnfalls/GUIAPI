@@ -21,7 +21,7 @@
         <dependency>
             <groupId>me.downn_falls</groupId>
             <artifactId>guiapi-api</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

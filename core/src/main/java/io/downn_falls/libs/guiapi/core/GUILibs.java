@@ -25,7 +25,7 @@ public class GUILibs {
     private final HashMap<Player, GuiListTextInput> guiListTextInput = new HashMap<>();
     private final HashMap<Player, GuiItemChooser> guiChooseItem = new HashMap<>();
 
-    GUILibs(Plugin plugin) {
+    public GUILibs(Plugin plugin) {
         this.plugin = plugin;
         this.adapter = setupAdapter();
     }

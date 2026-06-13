@@ -52,12 +52,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 
     <repositories>
@@ -84,37 +78,37 @@
         <dependency>
             <groupId>me.downn_falls</groupId>
             <artifactId>guiapi-api</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.downn_falls</groupId>
             <artifactId>guiapi-v1_8_R3</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.downn_falls</groupId>
             <artifactId>guiapi-v1_13_R2</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.downn_falls</groupId>
             <artifactId>guiapi-v1_16_R3</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.downn_falls</groupId>
             <artifactId>guiapi-v1_19_R3</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.downn_falls</groupId>
             <artifactId>guiapi-v1_20_R4</artifactId>
-            <version>1.0</version>
+            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

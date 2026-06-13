@@ -63,6 +63,8 @@ A modular, component-based GUI framework for Spigot/Paper plugins. Build interac
 - **NBT Metadata** — Attach typed NBT metadata (String, Integer, Double, Boolean, Long, Float, ItemStack) to rendered items via the renderer.
 - **Auto-Cleanup** — GUIs and update tasks are automatically cleaned up when no players are viewing.
 - **Item Return on Close** — Editable slots can optionally return items to the player's inventory (or drop them) when the GUI is closed.
+- **Backward Compatibility** — Supports Minecraft versions from 1.8 through the latest (including 26.x) via modular version adapters.
+- **Folia Support** — Compatible with Folia servers through dedicated scheduling adapters.
 
 ---
 
@@ -71,14 +73,13 @@ A modular, component-based GUI framework for Spigot/Paper plugins. Build interac
 ### Server
 | Requirement | Version |
 |---|---|
-| Minecraft | 1.20 — Latest (including 26.x) |
-| Server Platform | Spigot, Paper, or any Bukkit-compatible fork |
+| Minecraft | 1.8 — Latest (including 26.x) |
+| Server Platform | Spigot, Paper, Folia, or any Bukkit-compatible fork |
 
 ### Plugin
 | Requirement | Version |
 |---|---|
 | Java | 17+ |
-| [NBT-API](https://github.com/tr7zw/Item-NBT-API) | 2.15.7+ (must be installed as a plugin on the server) |
 
 ---
 
@@ -151,7 +152,7 @@ depend: [GUIAPI]
 ### 1. Initialize the API
 
 ```java
-import io.downn_falls.libs.guiapi.core.GUIAPI;
+import io.downn_falls.libs.guiapi.GUIAPI;
 import io.downn_falls.libs.guiapi.core.GUILibs;
 
 public class MyPlugin extends JavaPlugin {
@@ -172,7 +173,7 @@ GUI myGui = guiLibs.createGUI("&aMy Cool Menu", 3); // 3 rows = 27 slots
 
 // Add components...
 GuiButton button = new GuiButton(myGui, "hello", 13);
-button.setDisplayItem(new ItemStackBuilder(Material.DIAMOND, 1).setDisplayName("&bClick Me!").build());
+button.setDisplayItem(guiLibs.getItemBuilder(Material.DIAMOND, 1).setDisplayName("&bClick Me!").build());
 button.addListener((id, event) -> {
     event.getWhoClicked().sendMessage("Hello, World!");
     return true;
@@ -197,6 +198,14 @@ myGui.open(player);
 | `register()` | Registers the internal `GuiListener` with Bukkit's event system. **Must be called once in `onEnable()`.** |
 | `createGUI(String title, int rows)` | Creates a new `GUI` instance with the given title and row count. The title supports color codes. |
 | `getPlugin()` | Returns the owning plugin instance. |
+| `getAdapter()` | Returns the `VersionAdapter` for the current server version. |
+| `getItemBuilder()` | Creates an `ItemStackBuilder` with default Stone × 1. |
+| `getItemBuilder(Material)` | Creates an `ItemStackBuilder` with the given material × 1. |
+| `getItemBuilder(Material, int)` | Creates an `ItemStackBuilder` with the given material and amount. |
+| `getItemBuilder(ItemStack)` | Creates an `ItemStackBuilder` by cloning an existing item. |
+| `getPlayerHeadBuilder(OfflinePlayer)` | Creates an `ItemStackBuilder` for a player head item. |
+
+> **Important:** Always use `guiLibs.getItemBuilder(...)` to create `ItemStackBuilder` instances. The builder requires a `VersionAdapter` internally for cross-version color and model data support.
 
 ---
 
@@ -207,8 +216,7 @@ The `GUI` class represents a single inventory-based UI. It holds components, man
 #### Constructor
 
 ```java
-GUI gui = new GUI(plugin, "Title with &aColors", rows);
-// Or via GUILibs:
+// Via GUILibs (recommended):
 GUI gui = guiLibs.createGUI("&eTitle", 6); // 6 rows = 54 slots
 ```
 
@@ -230,12 +238,13 @@ GUI gui = guiLibs.createGUI("&eTitle", 6); // 6 rows = 54 slots
 | `getUUID()` | `UUID` | Returns the unique identifier for this GUI instance. |
 | `setEditable(boolean)` | `void` | Enables/disables editable mode. Automatically set to `true` when a `GuiEditableSlot` is rendered. |
 | `isEditable()` | `boolean` | Returns whether the GUI currently allows item manipulation. |
-| `addEditable(Editable)` | `void` | Registers an editable component (used internally by `GuiEditableSlot`). |
+| `getEditableList()` | `List<Editable>` | Returns all editable components (recursively, including nested panels). |
 | `getGroupUUID()` | `UUID` | Returns the group UUID (defaults to the GUI's own UUID). |
 | `setGroupUUID(UUID)` | `void` | Sets the group UUID for synchronized operations across multiple GUIs. |
+| `setTitle(String)` | `void` | Updates the GUI title. Supports color codes. |
 | `addUpdater(GuiComponent, long)` | `void` | Schedules a periodic async re-render for a component. Automatically cancels when no viewers remain. |
 | `clearUpdater()` | `void` | Cancels all scheduled update tasks. |
-| `getPlugin()` | `Plugin` | Returns the owning plugin instance. |
+| `getGuiLibrary()` | `GUILibs` | Returns the `GUILibs` instance associated with this GUI. |
 
 ---
 
@@ -329,7 +338,7 @@ GuiButton button = new GuiButton(gui, "my-button", 13); // slot 13
 ```java
 GuiButton submit = new GuiButton(gui, "submit", 22);
 submit.setDisplayItem(
-    new ItemStackBuilder(Material.EMERALD_BLOCK, 1)
+    guiLibs.getItemBuilder(Material.EMERALD_BLOCK, 1)
         .setDisplayName("&aSubmit")
         .addLore("", "&7Click to confirm your selection.")
         .build()
@@ -374,7 +383,7 @@ GuiCheckButton toggle = new GuiCheckButton(gui, "pvp-toggle", 13);
 ```java
 GuiCheckButton pvpToggle = new GuiCheckButton(gui, "pvp", 13);
 pvpToggle.setDisplayItem(
-    new ItemStackBuilder(Material.IRON_SWORD, 1)
+    guiLibs.getItemBuilder(Material.IRON_SWORD, 1)
         .setDisplayName("&ePVP Mode")
         .addLore("&7Status: {value}")
         .build()
@@ -418,7 +427,7 @@ GuiOptionButton options = new GuiOptionButton(gui, "difficulty", 13);
 ```java
 GuiOptionButton difficulty = new GuiOptionButton(gui, "difficulty", 22);
 difficulty.setDisplayItem(
-    new ItemStackBuilder(Material.COMPARATOR, 1)
+    guiLibs.getItemBuilder(Material.COMPARATOR, 1)
         .setDisplayName("&eDifficulty")
         .build()
 );
@@ -472,7 +481,7 @@ GuiTextInput input = new GuiTextInput(gui, "name-input", 10);
 ```java
 GuiTextInput nameInput = new GuiTextInput(gui, "arena-name", 13);
 nameInput.setDisplayItem(
-    new ItemStackBuilder(Material.NAME_TAG, 1)
+    guiLibs.getItemBuilder(Material.NAME_TAG, 1)
         .setDisplayName("&eArena Name")
         .addLore("&7Current: &f{text}", "", "&eClick to edit", "&7Right-click to reset")
         .build()
@@ -527,7 +536,7 @@ GuiListTextInput listInput = new GuiListTextInput(gui, "commands", 13);
 ```java
 GuiListTextInput commands = new GuiListTextInput(gui, "reward-commands", 22);
 commands.setDisplayItem(
-    new ItemStackBuilder(Material.COMMAND_BLOCK, 1)
+    guiLibs.getItemBuilder(Material.COMMAND_BLOCK, 1)
         .setDisplayName("&eReward Commands")
         .addLore("", "&7Commands to run on completion:")
         .build()
@@ -570,7 +579,7 @@ GuiItemChooser chooser = new GuiItemChooser(gui, "icon", 13);
 ```java
 GuiItemChooser iconChooser = new GuiItemChooser(gui, "shop-icon", 13);
 iconChooser.setDisplayItem(
-    new ItemStackBuilder(Material.ITEM_FRAME, 1)
+    guiLibs.getItemBuilder(Material.ITEM_FRAME, 1)
         .setDisplayName("&eShop Icon")
         .addLore("&7Click to select an icon", "&7Right-click to clear")
         .build()
@@ -624,7 +633,7 @@ GuiEditableSlot slot = new GuiEditableSlot(gui, "input-slot", 22);
 ```java
 GuiEditableSlot inputSlot = new GuiEditableSlot(gui, "sacrifice-item", 22);
 inputSlot.setDisplayItem(
-    new ItemStackBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE, 1)
+    guiLibs.getItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE, 1)
         .setDisplayName("&7Place an item here")
         .build()
 );
@@ -679,10 +688,10 @@ GuiPanel(GUI gui, String id, int slot, int row, int column)
 GuiPanel toolbar = new GuiPanel(gui, "toolbar", 0, 1, 9);
 
 GuiButton btn1 = new GuiButton(gui, "btn1", 0);
-btn1.setDisplayItem(new ItemStackBuilder(Material.COMPASS, 1).setDisplayName("&eHome").build());
+btn1.setDisplayItem(guiLibs.getItemBuilder(Material.COMPASS, 1).setDisplayName("&eHome").build());
 
 GuiButton btn2 = new GuiButton(gui, "btn2", 1);
-btn2.setDisplayItem(new ItemStackBuilder(Material.CHEST, 1).setDisplayName("&eInventory").build());
+btn2.setDisplayItem(guiLibs.getItemBuilder(Material.CHEST, 1).setDisplayName("&eInventory").build());
 
 toolbar.addComponent(btn1);
 toolbar.addComponent(btn2);
@@ -748,19 +757,19 @@ GuiListPage(GUI gui, String id, int slot, int row, int column, int prevSlot, int
 ```java
 GuiListPage shopPage = new GuiListPage(gui, "products", 0, 4, 9, 36, 44);
 shopPage.setNextButton(
-    new ItemStackBuilder(Material.ARROW, 1).setDisplayName("&eNext Page →").build()
+    guiLibs.getItemBuilder(Material.ARROW, 1).setDisplayName("&eNext Page →").build()
 );
 shopPage.setPrevButton(
-    new ItemStackBuilder(Material.ARROW, 1).setDisplayName("&e← Previous Page").build()
+    guiLibs.getItemBuilder(Material.ARROW, 1).setDisplayName("&e← Previous Page").build()
 );
 shopPage.setNotAvailableComponent(
-    new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE, 1).setDisplayName(" ").build()
+    guiLibs.getItemBuilder(Material.GRAY_STAINED_GLASS_PANE, 1).setDisplayName(" ").build()
 );
 
 // Add items
 for (int i = 0; i < 100; i++) {
     GuiButton item = new GuiButton(gui, "item-" + i, 0);
-    item.setDisplayItem(new ItemStackBuilder(Material.GOLD_INGOT, 1).setDisplayName("&eItem #" + i).build());
+    item.setDisplayItem(guiLibs.getItemBuilder(Material.GOLD_INGOT, 1).setDisplayName("&eItem #" + i).build());
     shopPage.addComponent(item);
 }
 
@@ -854,7 +863,7 @@ GuiConfigurableButton configBtn = new GuiConfigurableButton(gui, "spawn-config",
 | `setValue(String key, String value)` | `void` | Sets a value for a key (validated against the template). |
 | `getData()` | `HashMap<String, String>` | Returns all current key-value data. |
 | `getKeyTemplates()` | `HashMap<String, KeyValueTemplate>` | Returns all registered key templates. |
-| `setConfigGUI(GUI)` | `void` | Replaces the default configuration GUI with a custom one. |
+| `setConfigGUI(ConfigGUI)` | `void` | Replaces the default configuration GUI with a custom one. |
 | `updateConfig()` | `void` | Regenerates the default configuration GUI (call after adding new keys). |
 
 #### KeyValueTemplate
@@ -888,7 +897,7 @@ template.whenDefineValue(value -> {
 ```java
 GuiConfigurableButton spawnPoint = new GuiConfigurableButton(gui, "spawn", 13);
 spawnPoint.setDisplayItem(
-    new ItemStackBuilder(Material.ENDER_PEARL, 1)
+    guiLibs.getItemBuilder(Material.ENDER_PEARL, 1)
         .setDisplayName("&eSpawn Point")
         .addLore("&7X: &f{x}", "&7Y: &f{y}", "&7Z: &f{z}")
         .addLore("", "&eLeft-click to teleport", "&7Right-click to configure")
@@ -896,15 +905,15 @@ spawnPoint.setDisplayItem(
 );
 
 spawnPoint.addConfig("x", new KeyValueTemplate("0")
-    .setDisplay(new ItemStackBuilder(Material.PAPER, 1).setDisplayName("&eX Coordinate").build())
+    .setDisplay(guiLibs.getItemBuilder(Material.PAPER, 1).setDisplayName("&eX Coordinate").build())
     .whenDefineValue(v -> v.matches("-?\\d+"))
 );
 spawnPoint.addConfig("y", new KeyValueTemplate("64")
-    .setDisplay(new ItemStackBuilder(Material.PAPER, 1).setDisplayName("&eY Coordinate").build())
+    .setDisplay(guiLibs.getItemBuilder(Material.PAPER, 1).setDisplayName("&eY Coordinate").build())
     .whenDefineValue(v -> v.matches("-?\\d+"))
 );
 spawnPoint.addConfig("z", new KeyValueTemplate("0")
-    .setDisplay(new ItemStackBuilder(Material.PAPER, 1).setDisplayName("&eZ Coordinate").build())
+    .setDisplay(guiLibs.getItemBuilder(Material.PAPER, 1).setDisplayName("&eZ Coordinate").build())
     .whenDefineValue(v -> v.matches("-?\\d+"))
 );
 spawnPoint.updateConfig();
@@ -925,15 +934,17 @@ spawnPoint.addListener((id, event) -> {
 
 ### ItemStackBuilder
 
-A fluent builder for creating `ItemStack` instances with display names, lore, enchantments, item flags, custom model data, NBT tags, and player heads.
+A fluent builder for creating `ItemStack` instances with display names, lore, enchantments, item flags, custom model data, and NBT tags.
 
-#### Constructors
-
-```java
-new ItemStackBuilder()                           // Default: Stone × 1
-new ItemStackBuilder(Material material, int amount)
-new ItemStackBuilder(ItemStack item)             // Clone an existing item
-```
+> **Important:** Do not instantiate `ItemStackBuilder` directly. Always use the factory methods on `GUILibs`:
+>
+> ```java
+> guiLibs.getItemBuilder()                          // Default: Stone × 1
+> guiLibs.getItemBuilder(Material material)          // Material × 1
+> guiLibs.getItemBuilder(Material material, int amt) // Material × amount
+> guiLibs.getItemBuilder(ItemStack item)             // Clone an existing item
+> guiLibs.getPlayerHeadBuilder(OfflinePlayer player)  // Player head item
+> ```
 
 #### Methods
 
@@ -952,12 +963,11 @@ new ItemStackBuilder(ItemStack item)             // Clone an existing item
 | Method | Return | Description |
 |---|---|---|
 | `replaceLore(ItemStack, String... pairs)` | `ItemStack` | Creates a clone with lore placeholders replaced. Pairs are `(find, replace, find, replace, ...)`. |
-| `playerHead(OfflinePlayer)` | `ItemStackBuilder` | Creates a player head item for the given player. |
 
 #### Example
 
 ```java
-ItemStack item = new ItemStackBuilder(Material.DIAMOND_SWORD, 1)
+ItemStack item = guiLibs.getItemBuilder(Material.DIAMOND_SWORD, 1)
     .setDisplayName("&b&lExcalibur")
     .addLore("&7A legendary sword", "", "&eDamage: &c+50")
     .addEnchant(Enchantment.DAMAGE_ALL, 5, true)
@@ -1087,7 +1097,7 @@ GuiButton clock = new GuiButton(gui, "clock", 4);
 clock.whenUpdate(() -> {
     String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
     clock.setDisplayItem(
-        new ItemStackBuilder(Material.CLOCK, 1)
+        guiLibs.getItemBuilder(Material.CLOCK, 1)
             .setDisplayName("&e" + time)
             .build()
     );
@@ -1115,7 +1125,7 @@ GuiPanel inner = new GuiPanel(gui, "inner", 0, 2, 3);
 
 // Button at slot 0 WITHIN the inner panel
 GuiButton btn = new GuiButton(gui, "btn", 0);
-btn.setDisplayItem(new ItemStackBuilder(Material.EMERALD, 1).setDisplayName("&aNested!").build());
+btn.setDisplayItem(guiLibs.getItemBuilder(Material.EMERALD, 1).setDisplayName("&aNested!").build());
 
 inner.addComponent(btn);
 outer.addComponent(inner);

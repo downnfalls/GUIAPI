@@ -1,6 +1,6 @@
 name: GUIAPI
 version: '1.1'
-main: io.downn_falls.libs.guiapi.core.GUIAPI
+main: io.downn_falls.libs.guiapi.GUIAPI
 author: downn_falls
 folia-supported: true
 api-version: '1.13'
