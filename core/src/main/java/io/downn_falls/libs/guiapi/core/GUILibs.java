@@ -1,5 +1,6 @@
 package io.downn_falls.libs.guiapi.core;
 
+import de.tr7zw.changeme.nbtapi.NBT;
 import io.downn_falls.libs.guiapi.api.VersionAdapter;
 import io.downn_falls.libs.guiapi.core.component.GuiItemChooser;
 import io.downn_falls.libs.guiapi.core.component.GuiListTextInput;
@@ -25,9 +26,19 @@ public class GUILibs {
     private final HashMap<Player, GuiListTextInput> guiListTextInput = new HashMap<>();
     private final HashMap<Player, GuiItemChooser> guiChooseItem = new HashMap<>();
 
-    public GUILibs(Plugin plugin) {
+    private GUILibs(Plugin plugin) {
         this.plugin = plugin;
         this.adapter = setupAdapter();
+    }
+
+    public static GUILibs init(Plugin plugin) {
+
+        if (!NBT.preloadApi()) {
+            plugin.getLogger().warning("NBT-API wasn't initialized properly, disabling the plugin");
+            plugin.getPluginLoader().disablePlugin(plugin);
+        }
+
+        return new GUILibs(plugin);
     }
 
     private VersionAdapter setupAdapter() {
