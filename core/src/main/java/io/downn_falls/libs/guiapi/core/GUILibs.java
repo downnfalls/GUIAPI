@@ -32,12 +32,6 @@ public class GUILibs {
     }
 
     public static GUILibs init(Plugin plugin) {
-
-        if (!NBT.preloadApi()) {
-            plugin.getLogger().warning("NBT-API wasn't initialized properly, disabling the plugin");
-            plugin.getPluginLoader().disablePlugin(plugin);
-        }
-
         return new GUILibs(plugin);
     }
 
@@ -81,6 +75,12 @@ public class GUILibs {
     }
 
     public void register() {
+
+        if (!NBT.preloadApi()) {
+            plugin.getLogger().warning("NBT-API wasn't initialized properly, disabling the plugin");
+            plugin.getPluginLoader().disablePlugin(plugin);
+        }
+
         Bukkit.getPluginManager().registerEvents(new GuiListener(this), plugin);
     }
 

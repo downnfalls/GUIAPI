@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBT;
 import io.downn_falls.libs.guiapi.core.api.Clickable;
 import io.downn_falls.libs.guiapi.core.api.Editable;
 import io.downn_falls.libs.guiapi.core.component.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -183,6 +184,8 @@ public class GuiListener implements Listener {
 
             GuiInventoryHolder inventoryHolder = (GuiInventoryHolder) event.getInventory().getHolder();
 
+            if (inventoryHolder.getPlugin() != this.guiLibs.getPlugin()) return;
+
             GUI gui = guiLibs.getGuis().get(inventoryHolder.getInventoryUUID());
 
             List<GuiEditableSlot> toClear = new ArrayList<>();
@@ -220,10 +223,12 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void onInvClose(InventoryCloseEvent event) {
+        if (event.getInventory().getHolder() instanceof GuiInventoryHolder) {
 
-        try {
-            if (event.getInventory().getHolder() instanceof GuiInventoryHolder) {
+            GuiInventoryHolder inventoryHolder = (GuiInventoryHolder) event.getInventory().getHolder();
+            if (inventoryHolder.getPlugin() != this.guiLibs.getPlugin()) return;
 
+            try {
                 for (Map.Entry<UUID, GUI> entry : guiLibs.getGuis().entrySet()) {
 
                     if (entry.getValue().getInventory() != null && entry.getValue().getInventory().getViewers().isEmpty()) {
@@ -232,9 +237,8 @@ public class GuiListener implements Listener {
                     }
                 }
 
-                //GUI.guis.entrySet().removeIf(entry -> entry.getValue().getInventory() != null && entry.getValue().getInventory().getViewers().isEmpty());
-            }
-        } catch (Exception ignored) {}
+            } catch(Exception ignored) {}
+        }
     }
 
     @EventHandler
