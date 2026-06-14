@@ -11,9 +11,12 @@ A modular, component-based GUI framework for Spigot/Paper plugins. Build interac
 - [Features](#-features)
 - [Requirements](#-requirements)
 - [Installation](#-installation)
+  - [Repository](#-repository-required-for-both-options)
+  - [Option A: Plugin Dependency](#option-a-plugin-dependency-requires-guiapi-on-the-server)
+  - [Option B: Shade](#option-b-shade-bundle-into-your-jar)
 - [Quick Start](#-quick-start)
 - [Core Concepts](#-core-concepts)
-  - [GUIAPI & GUILibs](#guiapi--guilibs)
+  - [GUILibs](#guilibs)
   - [GUI](#gui)
   - [GuiRenderer](#guirenderer)
   - [GuiComponent (Base Class)](#guicomponent-base-class)
@@ -85,9 +88,23 @@ A modular, component-based GUI framework for Spigot/Paper plugins. Build interac
 
 ## 📦 Installation
 
-### Maven
+There are **two ways** to add GUIAPI to your project. Choose the one that fits your setup:
 
-Add the JitPack repository:
+| | Option A: Plugin Dependency | Option B: Shade (Bundle) |
+|---|---|---|
+| **How it works** | GUIAPI runs as a separate plugin on the server | GUIAPI is bundled directly inside your plugin JAR |
+| **Server requirement** | GUIAPI plugin must be installed on the server | No extra plugins needed |
+| **JAR size** | Smaller | Larger (includes GUIAPI classes) |
+| **Best for** | Shared library across multiple plugins | Standalone distribution, no external dependencies |
+
+---
+
+### 🔗 Repository (Required for both options)
+
+Add the JitPack repository to your build file:
+
+<details>
+<summary><b>Maven</b></summary>
 
 ```xml
 <repositories>
@@ -98,50 +115,197 @@ Add the JitPack repository:
 </repositories>
 ```
 
-Add the dependency:
+</details>
 
-```xml
-<dependency>
-    <groupId>com.github.downnfalls</groupId>
-    <artifactId>GUIAPI</artifactId>
-    <version>VERSION</version>
-    <scope>provided</scope>
-</dependency>
-```
-
-### Gradle (Groovy)
+<details>
+<summary><b>Gradle (Groovy)</b></summary>
 
 ```groovy
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io/' }
 }
-
-dependencies {
-    compileOnly 'com.github.downnfalls:GUIAPI:VERSION'
-}
 ```
 
-### Gradle (Kotlin DSL)
+</details>
+
+<details>
+<summary><b>Gradle (Kotlin DSL)</b></summary>
 
 ```kotlin
 repositories {
     mavenCentral()
     maven("https://jitpack.io/")
 }
+```
 
+</details>
+
+---
+
+### Option A: Plugin Dependency (Requires GUIAPI on the server)
+
+Use this option if you want to keep your plugin JAR small and use GUIAPI as a **shared library plugin** on the server. You must install the GUIAPI plugin JAR on the server's `plugins/` folder.
+
+<details>
+<summary><b>Maven</b></summary>
+
+```xml
+<dependency>
+    <groupId>com.github.downnfalls.guiapi</groupId>
+    <artifactId>guiapi-plugin</artifactId>
+    <version>VERSION</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+</details>
+
+<details>
+<summary><b>Gradle (Groovy)</b></summary>
+
+```groovy
 dependencies {
-    compileOnly("com.github.downnfalls:GUIAPI:VERSION")
+    compileOnly 'com.github.downnfalls.guiapi:guiapi-plugin:VERSION'
 }
 ```
 
-### plugin.yml
+</details>
 
-Register GUIAPI as a dependency in your `plugin.yml`:
+<details>
+<summary><b>Gradle (Kotlin DSL)</b></summary>
+
+```kotlin
+dependencies {
+    compileOnly("com.github.downnfalls.guiapi:guiapi-plugin:VERSION")
+}
+```
+
+</details>
+
+#### plugin.yml
+
+Register GUIAPI as a dependency in your `plugin.yml` so the server loads it before your plugin:
 
 ```yml
 depend: [GUIAPI]
 ```
+
+---
+
+### Option B: Shade (Bundle into your JAR)
+
+Use this option if you want to **include GUIAPI inside your plugin JAR** so your plugin works standalone without installing GUIAPI separately on the server.
+
+> ⚠️ **Important:** When shading, you **must** relocate the GUIAPI package to avoid conflicts with other plugins that may also shade GUIAPI.
+
+<details>
+<summary><b>Maven</b></summary>
+
+**1. Add the dependency** (use `compile` scope):
+
+```xml
+<dependency>
+    <groupId>com.github.downnfalls.guiapi</groupId>
+    <artifactId>guiapi-core</artifactId>
+    <version>VERSION</version>
+    <scope>compile</scope>
+</dependency>
+```
+
+**2. Configure the `maven-shade-plugin`** with relocation:
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.6.0</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <relocations>
+                            <relocation>
+                                <pattern>io.downn_falls.libs.guiapi</pattern>
+                                <shadedPattern>your.plugin.package.libs.guiapi</shadedPattern>
+                            </relocation>
+                        </relocations>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+> Replace `your.plugin.package` with your actual plugin's base package.
+
+</details>
+
+<details>
+<summary><b>Gradle (Groovy)</b></summary>
+
+**1. Apply the Shadow plugin:**
+
+```groovy
+plugins {
+    id 'com.gradleup.shadow' version '9.0.0-beta12'
+}
+```
+
+**2. Add the dependency** (use `implementation`):
+
+```groovy
+dependencies {
+    implementation 'com.github.downnfalls.guiapi:guiapi-core:VERSION'
+}
+```
+
+**3. Configure relocation:**
+
+```groovy
+shadowJar {
+    relocate 'io.downn_falls.libs.guiapi', 'your.plugin.package.libs.guiapi'
+}
+```
+
+</details>
+
+<details>
+<summary><b>Gradle (Kotlin DSL)</b></summary>
+
+**1. Apply the Shadow plugin:**
+
+```kotlin
+plugins {
+    id("com.gradleup.shadow") version "9.0.0-beta12"
+}
+```
+
+**2. Add the dependency** (use `implementation`):
+
+```kotlin
+dependencies {
+    implementation("com.github.downnfalls.guiapi:guiapi-core:VERSION")
+}
+```
+
+**3. Configure relocation:**
+
+```kotlin
+tasks.shadowJar {
+    relocate("io.downn_falls.libs.guiapi", "your.plugin.package.libs.guiapi")
+}
+```
+
+</details>
+
+---
 
 > Replace `VERSION` with the latest release tag from [JitPack](https://jitpack.io/#downnfalls/GUIAPI).
 
@@ -151,8 +315,11 @@ depend: [GUIAPI]
 
 ### 1. Initialize the API
 
+You can initialize `GUILibs` in two ways:
+
+**Per-plugin instance** — create your own `GUILibs` bound to your plugin:
+
 ```java
-import io.downn_falls.libs.guiapi.GUIAPI;
 import io.downn_falls.libs.guiapi.core.GUILibs;
 
 public class MyPlugin extends JavaPlugin {
@@ -160,11 +327,19 @@ public class MyPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        guiLibs = GUIAPI.get(this);
+        guiLibs = GUILibs.init(this);
         guiLibs.register(); // Registers all internal event listeners
     }
 }
 ```
+
+**Global default instance** — if you want a shared, globally accessible instance (e.g., for simpler setups), you can retrieve the default `GUILibs`:
+
+```java
+GUILibs guiLibs = GUILibs.getDefault();
+```
+
+> **Note:** The default instance is available when GUIAPI is installed as a plugin on the server (Option A). If you are shading (Option B), you must use `GUILibs.init(this)` to create your own instance.
 
 ### 2. Create and Open a GUI
 
@@ -187,14 +362,14 @@ myGui.open(player);
 
 ## 🏗️ Core Concepts
 
-### GUIAPI & GUILibs
+### GUILibs
 
-**`GUIAPI`** is the main plugin class and entry point. Use the static `GUIAPI.get(Plugin)` method to obtain a `GUILibs` instance bound to your plugin.
-
-**`GUILibs`** provides:
+**`GUILibs`** is the main entry point for creating GUIs and accessing builders.
 
 | Method | Description |
 |---|---|
+| `GUILibs.init(Plugin)` | Creates a new `GUILibs` instance bound to your plugin. Use this when you want a dedicated instance per plugin. |
+| `GUILibs.getDefault()` | Returns the global default `GUILibs` instance (available when GUIAPI is installed as a server plugin). |
 | `register()` | Registers the internal `GuiListener` with Bukkit's event system. **Must be called once in `onEnable()`.** |
 | `createGUI(String title, int rows)` | Creates a new `GUI` instance with the given title and row count. The title supports color codes. |
 | `getPlugin()` | Returns the owning plugin instance. |
