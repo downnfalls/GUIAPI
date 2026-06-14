@@ -10,6 +10,7 @@ A modular, component-based GUI framework for Spigot/Paper plugins. Build interac
 
 - [Features](#-features)
 - [Requirements](#-requirements)
+- [Download](#-download)
 - [Installation](#-installation)
   - [Repository](#-repository-required-for-both-options)
   - [Option A: Plugin Dependency](#option-a-plugin-dependency-requires-guiapi-on-the-server)
@@ -86,6 +87,16 @@ A modular, component-based GUI framework for Spigot/Paper plugins. Build interac
 
 ---
 
+## 📥 Download
+
+If you are using GUIAPI as a server plugin (Option A), download the latest plugin JAR from:
+
+[![Modrinth](https://img.shields.io/modrinth/dt/guiapiv1?logo=modrinth&label=Modrinth&color=00AF5C)](https://modrinth.com/plugin/guiapiv1)
+
+👉 **[Download on Modrinth](https://modrinth.com/plugin/guiapiv1)**
+
+---
+
 ## 📦 Installation
 
 There are **two ways** to add GUIAPI to your project. Choose the one that fits your setup:
@@ -145,7 +156,7 @@ repositories {
 
 ### Option A: Plugin Dependency (Requires GUIAPI on the server)
 
-Use this option if you want to keep your plugin JAR small and use GUIAPI as a **shared library plugin** on the server. You must install the GUIAPI plugin JAR on the server's `plugins/` folder.
+Use this option if you want to keep your plugin JAR small and use GUIAPI as a **shared library plugin** on the server. You must install the [GUIAPI plugin](https://modrinth.com/plugin/guiapiv1) JAR on the server's `plugins/` folder.
 
 <details>
 <summary><b>Maven</b></summary>
