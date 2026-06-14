@@ -347,7 +347,7 @@ public class MyPlugin extends JavaPlugin {
 **Global default instance** — if you want a shared, globally accessible instance (e.g., for simpler setups), you can retrieve the default `GUILibs`:
 
 ```java
-GUILibs guiLibs = GUILibs.getDefault();
+GUILibs guiLibs = GUIAPI.getDefault();
 ```
 
 > **Note:** The default instance is available when GUIAPI is installed as a plugin on the server (Option A). If you are shading (Option B), you must use `GUILibs.init(this)` to create your own instance.
@@ -380,7 +380,7 @@ myGui.open(player);
 | Method | Description |
 |---|---|
 | `GUILibs.init(Plugin)` | Creates a new `GUILibs` instance bound to your plugin. Use this when you want a dedicated instance per plugin. |
-| `GUILibs.getDefault()` | Returns the global default `GUILibs` instance (available when GUIAPI is installed as a server plugin). |
+| `GUIAPI.getDefault()` | Returns the global default `GUILibs` instance (available when GUIAPI is installed as a server plugin). |
 | `register()` | Registers the internal `GuiListener` with Bukkit's event system. **Must be called once in `onEnable()`.** |
 | `createGUI(String title, int rows)` | Creates a new `GUI` instance with the given title and row count. The title supports color codes. |
 | `getPlugin()` | Returns the owning plugin instance. |
