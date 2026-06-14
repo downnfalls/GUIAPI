@@ -1,4 +1,4 @@
-package io.downn_falls.libs.plugin;
+package io.downn_falls.libs;
 
 import io.downn_falls.libs.guiapi.core.GUILibs;
 import org.bukkit.plugin.Plugin;
